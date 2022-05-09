@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class moveFood : MonoBehaviour
+{
+    [SerializeField] float horizontal;
+    [SerializeField] Rigidbody2D rigid;
+    [SerializeField] int speed;
+    [SerializeField] bool isFacingRight = true;
+    [SerializeField] bool jumpPressed = false;
+    [SerializeField] float jumpForce = 500.0f;
+    [SerializeField] bool isGrounded = true;
+    [SerializeField] bool shiftPressed = false;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        if (rigid == null)
+            rigid = GetComponent<Rigidbody2D>();
+        speed = 15;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        horizontal = Input.GetAxis("Horizontal");
+        //if (Input.GetButtonDown("Jump"))
+            //jumpPressed = true;
+        
+    }
+
+    //called potentially multiple times per frame
+    //used for physics & movement
+    void FixedUpdate()
+    { 
+        rigid.velocity = new Vector2(Random.Range(-1f, 1f) * speed, rigid.velocity.y);
+		rigid.velocity = new Vector2(Random.Range(-1f, 1f) * speed, rigid.velocity.x);
+        if (horizontal < 0 && isFacingRight || horizontal > 0 && !isFacingRight)
+            Flip();
+        //if (jumpPressed && isGrounded)
+            //Jump();
+    }
+
+    void Flip()
+    {
+        transform.Rotate(0, 180, 0);
+        isFacingRight = !isFacingRight;
+    }
+
+
+}
